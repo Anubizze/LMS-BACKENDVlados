@@ -21,6 +21,33 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+<<<<<<< HEAD
+=======
+## Как запустить бэкенд (LMS)
+
+**Чтобы сайт работал, бэкенд должен быть запущен.**
+
+**Нужен PostgreSQL.** Бэкенд подключается к БД по `DATABASE_URL` из `.env` (по умолчанию `localhost:5432`, база `LMS`, пользователь `postgres`). Запусти службу PostgreSQL до старта бэкенда (например: служба «postgresql-x64-…» в Windows или `pg_ctl start` / Docker).
+
+1. Открой **терминал** (в Cursor: Terminal → New Terminal или в папке `backend` правый клик → «Open in Integrated Terminal»).
+2. Перейди в папку бэкенда: `cd backend` (если ты не в корне проекта — укажи полный путь к папке `backend`).
+3. Запусти: `npm run start:dev` (или `pnpm run start:dev`, если используешь pnpm).
+4. Дождись сообщения вроде **«Nest application successfully started»** или **«Listening on port 3001»**.
+5. Оставь это окно терминала открытым и обнови страницу в браузере (http://localhost:3000).
+
+Либо дважды кликни по файлу **`start-backend.bat`** в папке `backend` — откроется окно с запущенным сервером.
+
+### Бэкенд «не ловит» запросы (ERR_CONNECTION_REFUSED на :3001)
+
+1. **Запущен ли процесс бэкенда?** В отдельном терминале должен быть запущен `pnpm run start:dev` из папки `backend`, и окно не должно быть закрыто.
+2. **Есть ли строка в консоли?** Должно появиться: **`>>> Backend запущен: http://localhost:3001`**. Если её нет — процесс упал до старта (смотри текст ошибки выше в терминале).
+3. **Проверка в браузере:** открой **http://localhost:3001/health** — должна открыться страница с `{"ok":true,"message":"Backend works","port":3001}`. Если «Не удается получить доступ» — бэкенд не слушает порт 3001 (не запущен или упал).
+4. **PostgreSQL:** если при старте в консоли есть ошибка про БД — запусти службу PostgreSQL и проверь `DATABASE_URL` в `.env`.
+5. **Порт занят?** Если другой процесс занял 3001, смени порт в `backend/.env`: `PORT=3002` (и на фронте в `config/api.js` или `.env` укажи тот же порт).
+
+---
+
+>>>>>>> df9041c (LMS backend)
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.

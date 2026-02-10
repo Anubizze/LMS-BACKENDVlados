@@ -2,6 +2,11 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
+<<<<<<< HEAD
+=======
+import { JwtAuthGuard } from './jwt.guard';
+import { RolesGuard } from './roles.guard';
+>>>>>>> df9041c (LMS backend)
 
 @Module({
   imports:[
@@ -13,7 +18,12 @@ import { JwtModule } from '@nestjs/jwt';
     })
   ],
   controllers: [AuthController],
+<<<<<<< HEAD
   providers: [AuthService],
   exports:[JwtModule]
+=======
+  providers: [AuthService, JwtAuthGuard, RolesGuard],
+  exports:[JwtModule, JwtAuthGuard, RolesGuard]
+>>>>>>> df9041c (LMS backend)
 })
 export class AuthModule {}

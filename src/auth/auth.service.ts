@@ -1,5 +1,9 @@
 import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
+<<<<<<< HEAD
+=======
+import { UpdateProfileDto } from './dto/update-profile.dto';
+>>>>>>> df9041c (LMS backend)
 import { db } from 'src';
 import { usersTable } from 'src/db/schema';
 import { eq } from 'drizzle-orm';
@@ -18,16 +22,35 @@ export class AuthService {
     console.log(user)
     if (user.length) throw new ConflictException('Пользователь с таким email уже существует');
     const hashPassowrd = await hashFunction(dto.password)
+<<<<<<< HEAD
     const newUser = await db
+=======
+    const [newUser] = await db
+>>>>>>> df9041c (LMS backend)
       .insert(usersTable)
       .values({
         fullname: dto.fullname,
         email: dto.email,
         passwordHash: hashPassowrd,
+<<<<<<< HEAD
         role: dto.role,
       })
       .returning()
     return { message: 'Регистрация прошла успешно', user: newUser };
+=======
+        role: dto.role ?? 'student',
+      })
+      .returning();
+
+    const payload = { id: newUser.id, email: newUser.email, role: newUser.role };
+    const token = this.jwtService.sign(payload);
+
+    return {
+      message: 'Регистрация прошла успешно',
+      user: { id: newUser.id, fullname: newUser.fullname, email: newUser.email, role: newUser.role, avatarUrl: newUser.avatarUrl ?? undefined, createdAt: newUser.createdAt },
+      token,
+    };
+>>>>>>> df9041c (LMS backend)
   }
 
   async login(dto: LoginDto) {
@@ -59,8 +82,43 @@ export class AuthService {
         fullname: user[0].fullname,
         email: user[0].email,
         role: user[0].role,
+<<<<<<< HEAD
+=======
+        avatarUrl: user[0].avatarUrl ?? undefined,
+        createdAt: user[0].createdAt,
+>>>>>>> df9041c (LMS backend)
       },
       token
     }
   }
+<<<<<<< HEAD
+=======
+
+  async getMe(userId: number) {
+    const [user] = await db.select()
+      .from(usersTable)
+      .where(eq(usersTable.id, userId))
+      .limit(1);
+    if (!user) return null;
+    return {
+      id: user.id,
+      fullname: user.fullname,
+      email: user.email,
+      role: user.role,
+      avatarUrl: user.avatarUrl ?? undefined,
+      createdAt: user.createdAt,
+    };
+  }
+
+  async updateProfile(userId: number, dto: UpdateProfileDto) {
+    const updates: { avatarUrl?: string | null } = {};
+    if (dto.avatarUrl !== undefined) updates.avatarUrl = dto.avatarUrl || null;
+    if (Object.keys(updates).length === 0) return this.getMe(userId);
+    await db
+      .update(usersTable)
+      .set(updates)
+      .where(eq(usersTable.id, userId));
+    return this.getMe(userId);
+  }
+>>>>>>> df9041c (LMS backend)
 }
