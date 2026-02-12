@@ -11,6 +11,14 @@
   node_bundler = "esbuild"
   directory = "netlify/functions"
 
+# CORS: разрешить запросы с фронта (Netlify)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
