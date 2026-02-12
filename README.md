@@ -43,6 +43,20 @@
 4. **PostgreSQL:** если при старте в консоли есть ошибка про БД — запусти службу PostgreSQL и проверь `DATABASE_URL` в `.env`.
 5. **Порт занят?** Если другой процесс занял 3001, смени порт в `backend/.env`: `PORT=3002` (и на фронте в `config/api.js` или `.env` укажи тот же порт).
 
+### Режим Netlify dev (один бэкенд-терминал, фронт ходит на :8888)
+
+Если хочешь запускать бэкенд одной командой и чтобы фронт к нему подключался:
+
+1. **В папке `backend`:** `pnpm run netlify:dev` — поднимется Nest на 3001 и Netlify dev на **http://localhost:8888** (запросы на 8888 проксируются на Nest).
+2. **В папке `frontend`:** создай файл **`.env.development.local`** с одной строкой:
+   ```env
+   REACT_APP_API_URL=http://localhost:8888
+   ```
+3. Запусти фронт: `pnpm start` (из папки `frontend`).
+4. Фронт будет ходить на бэкенд по адресу 8888.
+
+Без `.env.development.local` фронт в dev по умолчанию использует proxy на 3001 (режим «backend start:dev + frontend start»).
+
 ---
 
 ## Description
