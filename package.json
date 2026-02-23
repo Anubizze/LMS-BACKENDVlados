@@ -22,7 +22,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "start:prod:with-migrate": "drizzle-kit migrate && node dist/main",
-    "start:render": "pnpm run build && node dist/main",
+    "start:render": "pnpm run build && node scripts/render-start.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
