@@ -10,12 +10,13 @@ import {
 
 export class CreateCourseDto {
   @IsString()
-  @MaxLength(500)
+  @MaxLength(64)
   title: string;
 
+  @IsOptional()
   @IsInt()
   @Min(1)
-  categoryId: number;
+  categoryId?: number;
 
   @IsOptional()
   @IsString()

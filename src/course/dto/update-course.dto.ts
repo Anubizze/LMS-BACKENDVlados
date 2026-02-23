@@ -11,7 +11,7 @@ import {
 export class UpdateCourseDto {
   @IsOptional()
   @IsString()
-  @MaxLength(500)
+  @MaxLength(64)
   title?: string;
 
   @IsOptional()

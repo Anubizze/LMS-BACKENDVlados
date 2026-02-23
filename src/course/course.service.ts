@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { asc, eq, and } from 'drizzle-orm';
 import { db } from 'src';
 import { coursesTable, lessonsTable, usersTable, categoryTable } from 'src/db/schema';
@@ -184,14 +184,16 @@ export class CourseService implements OnModuleInit {
   }
 
   async create(userId: number, dto: CreateCourseDto) {
-    const [category] = await db.select().from(categoryTable).where(eq(categoryTable.id, dto.categoryId)).limit(1);
+    const categoryId = dto.categoryId;
+    if (categoryId == null) throw new BadRequestException('categoryId обязателен');
+    const [category] = await db.select().from(categoryTable).where(eq(categoryTable.id, categoryId)).limit(1);
     if (!category) throw new NotFoundException('Категория не найдена');
 
     const [course] = await db
       .insert(coursesTable)
       .values({
         userId,
-        categoryId: dto.categoryId,
+        categoryId,
         title: dto.title,
         description: dto.description ?? null,
         fullDescription: dto.fullDescription ?? null,
